@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8"> 
+    <link rel="stylesheet" href="$libraries/lib.css">
+    <head class="main">
+        <title>Index</title>
+        <h1 class="title main">Webpage </h1>
+        <h3 class="title main"> Welcome to my webpage! </h3>
+        <p class="main">This webpage is made in html. <img src="htmllogo.png" alt="HTML5 logo" title="HTML5 logo" width=20px height=20px>
+        </p> 
+        <hr class="main">
+    </head>
+    <body>
+        <div id="sidebar">
+            <button id="sidebarHide" onclick="sideBarManager.hide.all()">Hide</button>
+            <div class="sbdiv">
+                <button onclick="sideBarManager.hide.otherpages()">Other pages</button>
+                <span id="sidebarOtherpages" style="display:none">
+                    <object width="100" height="150" data="$libraries/context/contextOtherpages.html"></object>
+                </span>
+            </div>
+        </div>
+        <button id="sidebarShow" onclick="sideBarManager.hide.all()">Show</button>
+        <div class="main">
+        <h2>Contents</h2>
+        <ol type="I">
+            <li> <a class="chl" href=#htmlinfo>What is html?</a> </li>
+            <li> <a class="chl" href=#pagecreationreason>Why did I make this page?</a> </li>
+            <li> <a class="chl" href=#htmlexamples>Html code examples</Html></a> </li>
+        </ol>
+        <hr>
+        <h3 id="htmlinfo">What is html?</h3>
+            <span>
+                <p class="p" title="Information about what html is">
+                    Html, also known as HyperText Markup Language is a markup language used to make webpages
+                    It's considered one of the easiest markup languages to learn.
+                    It's also the markup language this is made in.
+                </p>
+            </span>
+        <h3 id="pagecreationreason">Why did I make this page?</h3>
+            <p class="p" title="Information about why I made this page">
+                I made this page to show my progress in learning HTML, using what I've learned to improve this page.
+                This page may be simple compared to much bigger ones, but it shows my progress in learning this language.
+            </p>
+        <h3 id="htmlexamples">Html code examples</h3>
+        <p>Let's start with a simple paragraph</p>
+        <div class="code">
+            <pre>
+            <code>
+&lt;!DOCTYPE html&gt; 
+&lt;html&gt; 
+    &lt;head&gt; 
+    &lt;/head&gt; 
+    &lt;body&gt;
+        &lt;p&gt;Hello, world &lt;/p&gt; 
+    &lt;/body&gt; 
+&lt;/html&gt; 
+            </code>
+            </pre>
+        </div>
+        <button type="button" onclick="SetHtmlByID('ex1','<p> Hello, world </p>')">Run HTML</button>
+        <br>Result:
+        <div class="code" id="ex1">
+            <br>
+        </div>
+        <p>Now a list</p>
+        <div class="code">
+            <pre>
+            <code>
+&lt;!DOCTYPE html&gt; 
+&lt;html&gt; 
+    &lt;head&gt; 
+    &lt;/head&gt; 
+    &lt;body&gt; 
+        &lt;ol&gt; &lt;li&gt; Item &lt;/li&gt; &lt;/ol&gt; 
+    &lt;/body&gt; 
+&lt;/html&gt;
+            </code>
+            </pre>
+        </div>
+        <button type="button" onclick="SetHtmlByID('ex2','<ol> <li> Item </li> </ol>')">Run HTML</button>
+        <br>Result:
+        <div class="code" id="ex2">
+            <br>
+        </div>
+    </div>
+    </body>
+    <footer class="main">
+        <hr>
+        <p>Made by cycro</p>
+        <a class = "hl" href="https://learn-html.org" target="_blank" title="https://learn-html.org">This is where I began learning HTML</a> and <a class = "hl" href="https://www.w3schools.com/html/"  target="_blank" title="https://www.w3schools.com/html/">this is where I continued learning HTML</a>
+    </footer>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+</html>
+<style>
+    .chl:hover {
+        color:rgb(50, 138, 238);
+    } 
+    
+    .chl:active {
+        color: rgb(17, 168, 255);    
+    }
+    
+    .chl {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif;
+        color:blue
+    }
+    .code {
+        background-color: rgb(190, 190, 190);
+        width:450px;
+        border-style: solid;
+    }
+</style>
+<!--style 2--><style>
+#sidebar {
+    height: 100%;
+    width: 140px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #FFFFFF;
+    overflow-x: auto;
+    overflow-y: auto;
+    margin-left: 0px;
+    padding: 10px;
+    display: none;
+    font-size: 85%;
+    outline: 2px solid black;
+}
+.main {
+    margin-left: 50px;
+}
+#sidebarShow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    display: inline-block;
+}
+</style>
+<script src="$libraries/lib.js"> </script>
+<script src="$libraries/CJBLP.js"> </script>
+<script>
+"use strict";
+</script>

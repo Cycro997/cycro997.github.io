@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<!-- HTML -->
+<html lang="en">
+    <meta charset="UTF-8"> 
+    <link rel="stylesheet" href="$libraries/lib.css">
+    <head class="main">
+        <title class="title main">Calculator</title>
+        <h1 class="title main">Calculator </h1>
+        <hr class="main">
+    </head>
+    <body>
+        <div id="sidebar">
+            <button id="sidebarHide" onclick="sideBarManager.hide.all()">Hide</button>
+            <div class="sbdiv">
+                <button onclick="sideBarManager.hide.otherpages()">Other pages</button>
+                <span id="sidebarOtherpages" style="display:none">
+                    <object width="100" height="150" data="$libraries/context/contextOtherpages.html"></object>
+                </span>
+            </div>
+        </div>
+        <div class="main">
+        <button id="sidebarShow" onclick="sideBarManager.hide.all()">Show</button>
+        <div id="calcDisplay2">0</div>
+        <input id="calcDisplay" value="0">
+        <div id="calcButtons">
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='7'" title="7">7</button>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='8'" title="8">8</button>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='9'" title="9">9</button>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value=document.getElementById('calcDisplay').value.slice(0,-1)" title="backspace">&lt;</button>
+        <button type="button" id="calcButton" onclick="equationobj.divide()" title="divide">/</button>
+        <button type="button" id="calcButton" class="mathFunction" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);act='none';document.getElementById('calcDisplay').value=(Math.tan(nums[0]));document.getElementById('calcDisplay2').innerHTML='tan('+String(nums[0])+')'+'='+Math.tan(nums[0]);nums=[]" title="tangent">tan</button> <br>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='4'" title="4">4</button>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='5'" title="5">5</button>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='6'" title="6">6</button> 
+        <button type="button" id="calcButton" onclick="equationobj.add()" title="add">+</button>
+        <button type="button" id="calcButton" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);n=1;act='exp';document.getElementById('calcDisplay').value = 0;document.getElementById('calcDisplay2').innerHTML=String(nums[0])+'^'" title="exponentiate">^</button>
+        <button type="button" id="calcButton" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);act='none';document.getElementById('calcDisplay').value=(fact(nums[0]));document.getElementById('calcDisplay2').innerHTML=String(nums[0])+'!'+'='+fact(nums[0]);nums=[]" title="factorial">!</button> <br>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='1'" title="1">1</button>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='2'" title="2">2</button>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='3'" title="3">3</button>
+        <button type="button" id="calcButton" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);n=1;act='mul';document.getElementById('calcDisplay').value = 0;document.getElementById('calcDisplay2').innerHTML=String(nums[0])+'*'" title="multiply">*</button>
+        <button type="button" id="calcButton" class="mathConstant" onclick="document.getElementById('calcDisplay').value=Math.PI" title="pi">π</button>
+        <button type="button" id="calcButton" class="mathFunction" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);act='none';document.getElementById('calcDisplay').value=(Math.exp(nums[0]));document.getElementById('calcDisplay2').innerHTML='exp('+String(nums[0])+')'+'='+Math.exp(nums[0]);nums=[]" title="exponential (e^x)">exp</button> <br>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value = 0;n=0;nums=[];act='none';document.getElementById('calcDisplay2').innerHTML=0" title="clear">C</button>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='0'" title="0">0</button>
+        <button type="button" id="calcButton" onclick="nums[1]=Number(document.getElementById('calcDisplay').value);document.getElementById('calcDisplay').value=(calc());n=0;nums=[];act='none'" title="equals">=</button>
+        <button type="button" id="calcButton" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);n=1;act='sub';document.getElementById('calcDisplay').value = 0;document.getElementById('calcDisplay2').innerHTML=String(nums[0])+'-'" title="subtract">-</button>
+        <button type="button" id="calcButton" class="mathConstant" onclick="document.getElementById('calcDisplay').value=Math.E" title="euler's number">e</button>
+        <button type="button" id="calcButton" class="mathFunction" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);act='none';document.getElementById('calcDisplay').value=(Math.log(nums[0]));document.getElementById('calcDisplay2').innerHTML='ln('+String(nums[0])+')'+'='+Math.log(nums[0]);nums=[]" title="natural logarithm">ln</button> <br>
+        <button type="button" id="calcButton" onclick="addSub()" title="add/remove negative symbol">+/-</button>
+        <button type="button" id="calcButton" onclick="document.getElementById('calcDisplay').value+='.'" style="padding-left:8px;padding-right:8px" title="decimal point">.</button>
+        <button type="button" id="calcButton" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);act='none';document.getElementById('calcDisplay').value=(Math.sqrt(nums[0]));document.getElementById('calcDisplay2').innerHTML='√'+String(nums[0])+'='+Math.sqrt(nums[0]);nums=[]" title="square root">√</button>
+        <button type="button" id="calcButton" class="mathFunction" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);act='none';document.getElementById('calcDisplay').value=(Math.sin(nums[0]));document.getElementById('calcDisplay2').innerHTML='sin('+String(nums[0])+')'+'='+Math.sin(nums[0]);nums=[]" title="sine">sin</button> 
+        <button type="button" id="calcButton" class="mathFunction" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);act='none';document.getElementById('calcDisplay').value=(Math.cos(nums[0]));document.getElementById('calcDisplay2').innerHTML='cos('+String(nums[0])+')'+'='+Math.cos(nums[0]);nums=[]" title="cosine">cos</button>
+        <button type="button" id="calcButton" class="mathFunction" onclick="nums[0]=Number(document.getElementById('calcDisplay').value);act='none';document.getElementById('calcDisplay').value=(Math.log10(nums[0]));document.getElementById('calcDisplay2').innerHTML='log('+String(nums[0])+')'+'='+Math.log10(nums[0]);nums=[]" title="base 10 logarithm">log</button> <br>
+        </div>
+        </div>
+    </body>
+</html> 
+<!-- CSS -->
+<style>
+#calcDisplay {
+    width: 332px; height: 35px;
+    background-color: white;
+    border-style: solid; border-color: black; 
+    padding: 5px;
+    text-align: right;
+    font-family: 'Segoe UI', Tahoma; font-size: 20px;
+}
+#calcButtons {
+    width: 334px; height: 200px;
+    padding: 4px;
+    background-color: white;
+    border-style: solid; border-color: black; border-width: 2px;
+}
+#calcButton {
+    border-color: black;
+    width: 33px; height: 33px;
+    margin-top: 2px; margin-bottom: 2px;
+    font-family: 'Segoe UI', Tahoma; font-weight: bold;
+}
+#calcDisplay2 {
+    width: 332px; height: 15px;
+    background-color: white;
+    padding: 5px;
+    border-style: solid; border-color: black; border-width: 2px;
+    font-family: 'Segoe UI', Tahoma; font-size: 15px; 
+    text-align:right;
+}
+.mathFunction {
+    color: rgb(255, 102, 0);
+}
+.mathConstant {
+    color: rgb(0, 132, 255);
+    font-style: italic;
+}
+</style>
+<!--style 2--><style>
+#sidebar {
+    height: 100%;
+    width: 140px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #FFFFFF;
+    overflow-x: auto;
+    overflow-y: auto;
+    margin-left: 0px;
+    padding: 10px;
+    display: none;
+    font-size: 85%;
+    outline: 2px solid black;
+}
+.main {
+    margin-left: 50px;
+}
+#sidebarShow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    display: inline-block;
+}
+</style>
+<!-- JS --> 
+<script src="$libraries/lib.js"> </script>
+<script src="$libraries/CJBLP.js"> </script>
+<script>
+"use strict";
+document.getElementById('calcDisplay').value=0;
+let n=0;
+let nums=[];
+let act="none";
+const equationobj = {
+    divide: function(){ nums[0]=Number(document.getElementById('calcDisplay').value);n=1;act='div';document.getElementById('calcDisplay').value = 0;document.getElementById('calcDisplay2').innerHTML=String(nums[0])+'/' },
+    add: function(){ nums[0]=Number(document.getElementById('calcDisplay').value);n=1;act='add';document.getElementById('calcDisplay').value = 0 ;document.getElementById('calcDisplay2').innerHTML=String(nums[0])+'+'},
+}
+function SetHtmlByID(id,result,value="innerHTML") {
+    if (value="innerHTML"){
+        document.getElementById(id).innerHTML = result;
+    } else if (value="value"){
+        document.getElementById(id).value = result;
+    }
+  };
+function SetHtmlByClass(className,result) {
+    document.getElementsByClassName(className).innerHTML = result;
+  };
+function calc() {
+    let result=NaN
+    switch (act) {
+        case "none":
+            result= Number(document.getElementById("calcDisplay").value)
+            document.getElementById('calcDisplay2').innerHTML=result+'='+result;
+            return result
+        case "mul":
+            result=nums[0]*nums[1];
+            document.getElementById('calcDisplay2').innerHTML+=nums[1]+'='+result;
+            return result
+        case "add":
+            result=nums[0]+nums[1];
+            document.getElementById('calcDisplay2').innerHTML+=nums[1]+'='+result;
+            return result
+        case "sub":
+            result=nums[0]-nums[1];
+            document.getElementById('calcDisplay2').innerHTML+=nums[1]+'='+result;
+            return result
+        case "div":
+            result=nums[0]/nums[1];
+            document.getElementById('calcDisplay2').innerHTML+=nums[1]+'='+result;
+            return result
+        case "exp":
+            result=nums[0]**nums[1];
+            document.getElementById('calcDisplay2').innerHTML+=nums[1]+'='+result;
+            return result
+    }
+};
+function addSub() {
+    if (document.getElementById('calcDisplay').value[0]!="-") {
+        document.getElementById('calcDisplay').value='-'+document.getElementById('calcDisplay').value
+    } else {
+        document.getElementById('calcDisplay').value=document.getElementById('calcDisplay').value.slice(1)
+    };
+};
+function fact(n) { 
+    let ans = 1; 
+     
+    if(n === 0){
+        if (debug) {
+            console.debug("Factorial operation - ans="+ans+" - i="+i);
+        }
+        return 1
+    }
+    else if (n>=500){
+        return Infinity
+    } 
+    else if (n<0) {
+        return "unsupported"
+    }
+    for (let i = 2; i <= n; i++) {
+        ans = ans * i;
+    }
+    return ans; 
+}
+</script>

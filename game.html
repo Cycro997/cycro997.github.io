@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<!-- HTML -->
+<html lang="en">
+    <meta charset="UTF-8"> 
+    <link rel="stylesheet" href="$libraries/lib.css">
+    <head>
+        <title class="title main">Game</title>
+        <h1 class="title main">Game</h1>
+    </head>
+    <body>
+        <div id="sidebar">
+            <button id="sidebarHide" onclick="sideBarManager.hide.all()">Hide</button>
+            <div class="sbdiv">
+                <button onclick="sideBarManager.hide.otherpages()">Other pages</button>
+                <span id="sidebarOtherpages" style="display:none">
+                    <object width="100" height="150" data="$libraries/context/contextOtherpages.html"></object>
+                </span>
+            </div>
+        </div>
+        <button id="sidebarShow" onclick="sideBarManager.hide.all()">Show</button>
+<div class="main">
+        <div class="main">
+        <p>Game thing</p><hr>
+        <p title="pStats">
+            <span id="highscore" title="highest score you have ever achieved">Highscore: </span>
+        </p>
+        <p title="Stats">
+            <span id="score" title="The amount of points you have">Score: 1000</span> - 
+            <span id="moves" title="How many times you moved">Moves: 0</span> -
+            <span id="gold" title="The amount of gold you collected">Gold: 0</span>
+        </p>
+    <div id="grid" title="grid">
+    </div>
+
+        <!--Buttons--> <br>
+        <button class="movecontrol" onclick="obj.move(-1,-1)">↖</button>
+        <button class="movecontrol" onclick="obj.move(0,-1)">↑ </button>
+        <button class="movecontrol" onclick="obj.move(1,-1)">↗</button> <br>
+        <button class="movecontrol" onclick="obj.move(-1,0)">←</button>
+        <button class="movecontrol" >·</button>
+        <button class="movecontrol" onclick="obj.move(1,0)">→</button> <br>
+        <button class="movecontrol" onclick="obj.move(-1,1)">↙</button>
+        <button class="movecontrol" onclick="obj.move(0,1)">↓</button>
+        <button class="movecontrol" onclick="obj.move(1,1)">↘</button>
+        <!--Other--> <br>
+        <p id="gameover" title="Game over"></p>
+</div>
+    </body>
+</html> 
+<!-- CSS -->
+<style>
+game-obj {
+    height: 25px; width: 25px;
+    display: inline-block;
+    position: absolute;
+    background-color: black;
+}
+[objid="obj"] {
+    background-color: black;
+    outline: solid darkgray 2px;
+    z-index: 1;
+}
+[objid="gold"] {
+    background-color: yellow;
+    outline: gold solid 2px;
+}
+[objtype~="wall"] {
+    background-color: gray;
+    outline: lightgray solid 2px;
+    z-index: 1;
+}
+.movecontrol {
+    border-color: black;
+    background-color: white;
+    width: 25px; height: 25px;
+    margin-bottom: 2px;
+    border-radius: 20%;
+}
+.movecontrol:hover {
+    background-color: lightgray;
+}
+.movecontrol:active {
+    background-color: gray;
+}
+#grid {
+    background-color: white;
+    width: 261px; height: 260px;
+    outline: black solid;
+    position: relative;
+}
+</style>
+<!--style 2--><style>
+#sidebar {
+    height: 100%;
+    width: 140px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #FFFFFF;
+    overflow-x: auto;
+    overflow-y: auto;
+    margin-left: 0px;
+    padding: 10px;
+    display: none;
+    font-size: 85%;
+    outline: 2px solid black;
+}
+.main {
+    margin-left: 50px;
+}
+#sidebarShow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    display: inline-block;
+}
+</style>
+<!-- JS -->
+<script src="$libraries/lib.js"> </script>
+<script src="$libraries/CJBLP.js"> </script>
+<script>
+"use strict";
+let score=1000, moves=0, gold2=0, highestScore=1000;
+
+if (localStorage.getItem("highscore")==null){
+    localStorage.setItem("highscore", "0");
+}
+function move(x,y) {
+    if (score<=0) {location.reload()}
+    if (collision(obj).includes(gold)) {
+        scoreAdd(Math.round(Math.random()*100+250+(gold2*12.5)-(moves*1.15)));
+        goldAdd(1);
+        do {gold.attr.x=((Math.random())*10);
+            gold.attr.y=((Math.random())*10);
+        } while (collision(gold).includes(obj) || collision(gold).includes(wall) || collision(gold).includes(wall2))
+            document.querySelector("[objid=gold]").style.left=(gold.attr.x*25)+"px";
+            document.querySelector("[objid=gold]").style.top=(gold.attr.y*25)+"px";
+        do {wall.attr.x=Math.floor(Math.random()*10);
+            wall.attr.y=Math.floor(Math.random()*10);
+        } while (collision(wall).includes(obj) || collision(wall).includes(gold) || collision(wall).includes(wall2))
+            document.querySelector("[objid=wall]").style.left=(wall.attr.x*25)+"px";
+            document.querySelector("[objid=wall]").style.top=(wall.attr.y*25)+"px";
+        do {wall2.attr.x=Math.floor(Math.random()*10);
+            wall2.attr.y=Math.floor(Math.random()*10);
+        } while (collision(wall2).includes(obj) || collision(wall2).includes(gold) || collision(wall2).includes(wall))
+            document.querySelector("[objid=wall]").style.left=(wall.attr.x*25)+"px";
+            document.querySelector("[objid=wall]").style.top=(wall.attr.y*25)+"px";
+        }
+    movesAdd(1);
+    scoreAdd(-25 - Math.floor(moves/2.5));
+}
+function scoreAdd(n) {
+    score+=n;
+    if ((score>=10000) && (score<10000000)) {
+        document.getElementById("score").innerHTML="Score: "+(Math.floor(score/10)/100)+"K";
+    } else {document.getElementById("score").innerHTML="Score: "+score;}
+    console.log("score:"+score+"("+n+")")
+    if (score<=0) {
+        document.getElementById("gameover").innerHTML="Game over <br> Highest score: "+highestScore;
+        console.log("game over")
+        if (Number(localStorage.getItem("highscore"))<Number(highestScore)){
+            localStorage.setItem("highscore",highestScore);
+            console.log("New high score:"+localStorage.getItem("highscore"));
+        }
+        document.getElementById("highscore").innerHTML="Highscore: "+localStorage.getItem("highscore");
+        alert("Game over"); 
+    }
+    if (highestScore<score) {highestScore=score; console.log("Highest score:"+highestScore)}
+}
+function movesAdd(n) {
+    moves+=n;
+    document.getElementById("moves").innerHTML="Moves: "+moves;
+    console.log("moves:"+moves+"("+n+")")
+}
+function goldAdd(n) {
+    gold2+=n;
+    document.getElementById("gold").innerHTML="Gold: "+gold2;
+    console.log("gold:"+gold2+"("+n+")")
+}
+if (localStorage.getItem("highscore")==null) {
+    document.cookie = "highscore=0; SameSite=None; secure=True"
+}
+document.getElementById("highscore").innerHTML="Highscore: "+localStorage.getItem("highscore");
+const debug = {}
+function collision(o, mode="byobj"){
+    function collidingwith(other){
+        function x_collide(){
+            return Math.abs(o.attr.x - other.attr.x) < (o.attr.lenx/2+other.attr.lenx/2)
+        }
+        function y_collide(){
+            return Math.abs(o.attr.y - other.attr.y) < (o.attr.leny/2+other.attr.leny/2)
+        }
+        return x_collide() && y_collide()
+    }
+    let collideswith=[];
+    let collidetypes=[];
+    for (let i of Object.values(gameobj.objects)){
+        if (collidingwith(i) && i.id != o.id){
+            collideswith.push(i)
+            collidetypes.push(i.attr.type)
+        }
+    }
+
+    if (mode=="byobj"){
+        return collideswith
+    } else if (mode=="bytype"){
+        return collidetypes
+    } else {
+        return undefined
+    }
+}
+class gameobj{
+    #attr; #events; #data; #id; #element
+    constructor(id,attr={},events={},data={}){
+        if(Object.keys(gameobj.objects).includes(id)){
+            throw "GameError: ID already in use";
+            return;
+        }
+        if (id==undefined) {throw SyntaxError("Attribute id is not defined")}
+        if (typeof id!= "string") {throw TypeError("Attribute id is not a string")}
+        this.#attr={...gameobj.defaultAttr,...attr},
+        this.#events={...gameobj.defaultEvents,...events},
+        this.#data=data,
+        this.#id=id;
+
+        this.#element=document.createElement("game-obj");
+        this.#element.setAttribute("objid",id);
+        this.#element.setAttribute("objtype",attr.type);
+        document.getElementById("grid").appendChild(this.element);
+        const thisobj=this;
+        setInterval(function(){
+            document.querySelector(`[objid=${id}]`).style.left=(25*(thisobj.attr.x- thisobj.attr.lenx/2))+"px";
+            document.querySelector(`[objid=${id}]`).style.top=(25*(thisobj.attr.y - thisobj.attr.leny/2))+"px";
+        },1)
+        gameobj.objects[id]=this;
+        if(attr.style!=null){
+            this.element.setAttribute("style",attr.style)
+        }
+        this.#element.style = this.#element.style + `width: ${this.attr.lenx*25}px; height: ${this.attr.leny*25}px; `
+        /*
+        id: an identifier for the object
+        attr: object attributes
+            x: x position
+            y: y position
+            solid: object is solid
+            type: object type [player,gold,wall]
+            style: optional CSS style data
+            lenx: specifies the object width
+            leny: specifies the obejct length
+        events: functions to run on events
+            onmove: runs on every move attempt
+            onmovesuccess: runs on every successful move attempt
+            onmovefail: runs on every failed move attempt
+        data: custom data you can use
+        */
+    }
+    move(x,y) {
+        let success=true;
+        this.attr.x+=x; this.attr.y+=y; 
+        if (this.events.onmove instanceof Function){this.events.onmove(x,y)}
+        if (this.attr.solid==1) {
+            const collide=collision(this);
+            const solidcollision=[];
+            for (let i of collide){
+                    if(i.attr.solid==true){
+                    success=false;
+                    break;
+                }
+            }
+        }
+        if (success==true) {
+            if (this.events.onmovesuccess instanceof Function){this.events.onmovesuccess(x,y)}
+        }
+        else {
+            this.attr.x-=x; this.attr.y-=y; 
+            if (this.events.onmovefail instanceof Function){this.events.onmovefail(x,y)}
+        }
+    }
+    get attr() {return this.#attr};
+    set attr(o) {
+        this.#attr = {
+            ...gameobj.defaultAttr,
+            ...o
+        }
+    };
+    get events() {return this.#events};
+    get data() {return this.#data};
+    get id() {return this.#id};
+    get element() {return this.#element};
+    static #objects={}
+    static get objects() {return gameobj.#objects};
+    static set objects(to) {gameobj.#objects=to};
+    static get defaultAttr(){return {
+            x:.5,
+            y:.5,
+            solid:0,
+            type:"unknown",
+            style:null,
+            lenx: 1,
+            leny: 1
+        }
+    }
+    static get defaultEvents(){return {onmove:null,onmovesuccess:null,onmovefail:null}}
+}
+class gameObjElement extends HTMLElement{
+    #objId;
+    #objType;
+    constructor(){
+        super();
+    }
+    connectedCallback() {
+        console.log("game: New object added: "+this.getAttribute("objid"));
+        this.#objId=this.getAttribute("objid")
+        this.#objType=this.getAttribute("objtype")
+    }
+    get objId() {
+        return this.#objId
+    }
+    get objType() {
+        return this.#objType
+    }
+}
+customElements.define("game-obj", gameObjElement);
+
+const obj=new gameobj("obj",{solid:1,type:"player"},{onmovesuccess:move},{});
+const gold=new gameobj("gold",{x:3,y:4,solid:0,type:"gold"},{},{})
+,wall=new gameobj("wall",{x:1,y:3,solid:1,type:"wall"},{},{})
+,wall2=new gameobj("wall2",{x:2,y:4,solid:1,type:"wall"},{},{});
+
+new gameobj("boundary_l", {style: "/*display: none*/", x: -.5, leny: 10, solid: 1})
+
+</script>

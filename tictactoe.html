@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8"> 
+    <link rel="stylesheet" href="$libraries/lib.css">
+    <head class="main">
+        <title>TicTacToe</title>
+        <h1 class="title main">TicTacToe</h1>
+        <hr class="main">
+    </head>
+    <body>
+        <div id="sidebar">
+            <button id="sidebarHide" onclick="sideBarManager.hide.all()">Hide</button>
+            <div class="sbdiv">
+                <button onclick="sideBarManager.hide.otherpages()">Other pages</button>
+                <span id="sidebarOtherpages" style="display:none">
+                    <object width="100" height="150" data="$libraries/context/contextOtherpages.html"></object>
+                </span>
+            </div>
+        </div>
+        <button id="sidebarShow" onclick="sideBarManager.hide.all()">Show</button>
+        <div class="main">
+            <p>
+                Wins:<br>
+                X: <span id="winsX">0</span> <br>
+                O: <span id="winsO">0</span> <br>
+                Draw: <span id="draws">0</span> <br>
+                <p id="winner"></p>
+            </p>
+            <div id="tttgrid">
+                <button class="tttgridspace" id="x0y0" onclick="select(0,0)">&ThickSpace;</button>
+                <button class="tttgridspace" id="x1y0" onclick="select(1,0)">&ThickSpace;</button>
+                <button class="tttgridspace" id="x2y0" onclick="select(2,0)">&ThickSpace;</button> <br>
+
+                <button class="tttgridspace" id="x0y1" onclick="select(0,1)">&ThickSpace;</button>
+                <button class="tttgridspace" id="x1y1" onclick="select(1,1)">&ThickSpace;</button>
+                <button class="tttgridspace" id="x2y1" onclick="select(2,1)">&ThickSpace;</button> <br>
+
+                <button class="tttgridspace" id="x0y2" onclick="select(0,2)">&ThickSpace;</button>
+                <button class="tttgridspace" id="x1y2" onclick="select(1,2)">&ThickSpace;</button>
+                <button class="tttgridspace" id="x2y2" onclick="select(2,2)">&ThickSpace;</button> <br>
+            </div>
+        </div>
+    </body>
+</html>
+<style>
+    #tttgrid {
+        background-color: white;
+        width: 160px;
+    }
+    .tttgridspace{
+        border-color: black;
+        margin: 0%;
+        width: 50px;
+        height: 50px;
+        outline: solid black;
+        display: inline-block;
+        border: none;
+        padding: 0px;
+        font-size: 200%;
+    }
+</style>
+<!--style 2--><style>
+#sidebar {
+    height: 100%;
+    width: 140px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #FFFFFF;
+    overflow-x: auto;
+    overflow-y: auto;
+    margin-left: 0px;
+    padding: 10px;
+    display: none;
+    font-size: 85%;
+    outline: 2px solid black;
+}
+.main {
+    margin-left: 50px;
+}
+#sidebarShow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    display: inline-block;
+}
+</style>
+<script src="$libraries/lib.js"> </script>
+<script src="$libraries/CJBLP.js"> </script>
+<script>
+"use strict";
+const board=[[0,0,0],[0,0,0],[0,0,0]]
+let turn=1;
+let occupied=0;
+if (sessionStorage.getItem('winsX')==null){
+    sessionStorage.setItem("winsX", 0);
+    sessionStorage.setItem("winsO", 0);
+    sessionStorage.setItem("draws", 0);
+}
+function select(x,y) {
+    if (! board[x][y] && turn!=0){
+        board[x][y]=turn;
+        occupied+=1;
+        document.getElementById("x"+x+"y"+y).innerHTML=(turn==1 ? "X" : "O");
+        document.getElementById("x"+x+"y"+y).style.backgroundColor=(turn==1 ? "#fcc" : "#ccf")
+        if (turn==1) {turn=2} else if (turn==2) {turn=1}
+        checkwin("X", 1);
+        checkwin("O", 2);
+        checkwin(undefined, 3);
+    }
+    function checkwin(who, index){
+        function win(who){
+            document.getElementById('winner').innerHTML=who+" wins"
+            sessionStorage.setItem("wins"+who, Number(sessionStorage.getItem("wins"+who))+1)
+            document.getElementById('winsX').innerHTML=sessionStorage.getItem('winsX');
+            document.getElementById('winsO').innerHTML=sessionStorage.getItem('winsO');
+            turn=0;
+        }
+        function draw() {
+            turn=0
+            sessionStorage.setItem("draws", Number(sessionStorage.getItem("draws"))+1)
+            document.getElementById('draws').innerHTML=sessionStorage.getItem('draws');
+        }
+        if (board[0][0]==index && board[1][0]==index && board[2][0]==index){
+            win(who);
+        } else if (board[0][1]==index && board[1][1]==index && board[2][1]==index){
+            win(who);
+        } else if (board[0][2]==index && board[1][2]==index && board[2][2]==index){
+            win(who);
+        } else if (board[0][0]==index && board[0][1]==index && board[0][2]==index){
+            win(who);
+        } else if (board[1][0]==index && board[1][1]==index && board[1][2]==index){
+            win(who);
+        } else if (board[2][0]==index && board[2][1]==index && board[2][2]==index){
+            win(who);
+        } else if (board[0][0]==index && board[1][1]==index && board[2][2]==index){
+            win(who);
+        } else if (board[0][2]==index && board[1][1]==index && board[2][0]==index){
+            win(who);
+        } else if (occupied==9 && index==3 && turn!=0) {
+            draw();
+        }
+
+    }
+}
+document.getElementById('winsX').innerHTML=sessionStorage.getItem('winsX');
+document.getElementById('winsO').innerHTML=sessionStorage.getItem('winsO');
+document.getElementById('draws').innerHTML=sessionStorage.getItem('draws');
+</script>

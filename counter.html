@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- HTML -->
+<html>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="$libraries/lib.css">
+    <head class="main">
+        <title class="title main">Counter</title>
+        <h1 class="title main">Counter</h1>
+        <hr class="main">
+    </head>
+    <body> 
+        <div id="sidebar">
+            <button id="sidebarHide" onclick="sideBarManager.hide.all()">Hide</button>
+            <div class="sbdiv">
+                <button onclick="sideBarManager.hide.otherpages()">Other pages</button>
+                <span id="sidebarOtherpages" style="display:none">
+                    <object width="100" height="150" data="$libraries/context/contextOtherpages.html"></object>
+                </span>
+            </div>
+        </div>
+        <button id="sidebarShow" onclick="sideBarManager.hide.all()">Show</button>
+        <div class="main">
+        <p data-counter="1">0</p>
+        <button onclick="c1.value+= 1">+1</button>
+        <button onclick="c1.value-= 1">-1</button>
+        <button onclick="c1.value*= 2">x2</button>
+        <button onclick="c1.value/= 2">÷2</button>
+        <button onclick="c1.value**= 2">^2</button>
+        <br>
+        <p data-counter="2">0</p>
+        <button onclick="c2Rate++">+1/cycle</button>
+        <button onclick="c2Rate--">-1/cycle</button>
+        <button onclick="clearInterval(c2interval)">stop</button>
+        <button onclick="changeC2Interval(1, true)">+1 cycle/s</button>
+        <button onclick="changeC2Interval(-1, true)">-1 cycle/s</button>
+        <br>
+        </div>
+    </body>
+</html> 
+<!-- CSS -->
+<style>
+[data-counter] {
+    color: black;
+    background-color: white;
+    display: inline-block;
+    border: outset black;
+    width: 155px;
+    padding: 3px 1px;
+    text-align: right;
+}
+</style>
+<!--style 2--><style>
+#sidebar {
+    height: 100%;
+    width: 140px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #FFFFFF;
+    overflow-x: auto;
+    overflow-y: auto;
+    margin-left: 0px;
+    padding: 10px;
+    display: none;
+    font-size: 85%;
+    outline: 2px solid black;
+}
+.main {
+    margin-left: 50px;
+}
+#sidebarShow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    display: inline-block;
+}
+</style>
+<!-- JS -->
+<script src="$libraries/lib.js"> </script>
+<script src="$libraries/CJBLP.js"> </script>
+<script>
+"use strict";
+class counter{
+    #value; #id;
+    constructor(id, value=0) { 
+        if (typeof id != "string") {
+            throw TypeError("Identifier type has to be String");
+        } else if (/[.#\[\]]/.test(id)) {
+            throw SyntaxError("id contains illegal character")
+        }
+        this.#value=value;
+        this.#id =id;
+        try {
+            document.querySelector("[data-counter=\""+this.id+'"').innerHTML=this.#value;
+        } catch (TypeError) {console.warn(`No element matches selector for ${this}`)}
+    }
+    toString() {
+        return this.#value
+    }
+    get value() {return this.#value}
+    set value(to) {
+        this.#value=to
+        try {
+            document.querySelector("[data-counter=\""+this.id+'"').innerHTML=this.#value;
+        } catch (TypeError) {}
+    }
+    get id() {return this.#id}
+    set id(to) {
+        this.#id=to
+        try {
+            document.querySelector("[data-counter=\""+this.id+'"').innerHTML=this.#value;
+        } catch (TypeError) {}
+    }
+
+}
+const c1=new counter("1",0), c2=new counter("2",0);
+let c2Rate=1, c2Delay=1;
+let c2interval=setInterval(function(){c2.value+= c2Rate}, 1000/c2Delay);
+function changeC2Interval(newInter, relative){
+    if (relative) {
+        c2Delay+=newInter
+    } else {
+        c2Delay=newInter
+    }
+    clearInterval(c2interval)
+    c2interval=setInterval(function(){c2.value+= c2Rate}, 1000/c2Delay);
+}
+const debug={
+    get c2Info() {return new Map([["delay",c2Delay],["rate",c2Rate],["interval",c2interval]])},
+    set c2Info(nval) {c2Delay=nval["delay"],c2Rate=nval["rate"]},
+    isCounter: function(id) {if (document.getElementById(id).getAttribute("data-counter")!=undefined) {return true} else{return false}}
+};
+</script>
