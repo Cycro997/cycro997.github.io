@@ -34,9 +34,10 @@ function getDate(date){
     return `${ryear}`
 }
 
-const r = getDate(new Date());
-document.getElementById("ctime").innerHTML =
-`Current: ${r}`
+setInterval(function(){
+    document.getElementById("ctime").innerHTML =
+    `Current: ${getDate(new Date())}`;
+}, 1)
 
 function changeOption(){
     const date = document.getElementById("enter").value;
