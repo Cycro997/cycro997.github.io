@@ -12,7 +12,6 @@ function getDate(date){
     }
     const start = toDay(convertTZ(new Date("2024-04-09")));
     let day = toDay(date) - start;
-    
     const rmonth = day % 12;
     const ryear = Math.floor(day / 12) + 2565;
     
